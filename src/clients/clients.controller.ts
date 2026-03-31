@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 
 @Controller('clients')
@@ -10,9 +10,28 @@ export class ClientsController {
         return this.clientsService.findAll()    
     }
 
-    @Post('user/new')
-    echo(@Body() body: any){
-        return this.clientsService.postClients(body.name)
+    @Get(':id')
+    getById(@Param('id')id: string){
+        return this.clientsService.getById(Number(id))
     }
 
+    @Post()
+    postProduct(@Body() body: {name: string, price: number, description:string }){
+        return this.clientsService.postProduct(body)
+    }
+
+    @Delete(':id')
+    deleteProduct(@Param('id')id: string){
+        return this.clientsService.delete(Number(id))
+    }
+
+    @Patch(":id")
+    updateProduct(
+      @Param('id')id: string,
+      @Body() body: {name: string; price: number; description: string}
+    ){
+        return this.clientsService.update(Number(id), body)
+    }
+    
+    
 }
